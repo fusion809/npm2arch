@@ -59,6 +59,20 @@ package() {
   _npmdir="$pkgdir/usr/lib/node_modules/$_npmname"
   mkdir -p $_npmdir
   cp -a $srcdir/package/* $_npmdir
+  if [[ -d "$pkgdir/usr/lib/node_modules/$_npmname/bin" ]]; then
+    BIN=$pkgdir/usr/bin
+    mkdir -p $BIN
+    cd $BIN
+    for i in "../lib/node_modules/$_npmname/bin/"*
+    do
+      L="${i##*/}"
+      K="${L%.*}"
+      if [[ "$L" == "$K" ]]; then
+        echo "Creating binary $L"
+        ln -s $i $L
+      fi
+    done
+  fi
   if [[ -f "$_npmdir/LICENSE" ]]; then
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     install -m644 "$_npmdir/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
