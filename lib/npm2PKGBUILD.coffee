@@ -42,28 +42,40 @@ module.exports = (npmName, options, cb) ->
 
 template = '''_npmname={{{name}}}
 _npmver={{{version}}}
-pkgname=nodejs-{{{nameLowerCase}}} # All lowercase
+pkgname=nodejs-{{{nameLowerCase}}}
 pkgver={{{archVersion}}}
 pkgrel=1
 pkgdesc=\"{{{description}}}\"
 arch=(any)
 url=\"{{{homepage}}}\"
 license=({{#licenses}}{{{type}}}{{/licenses}})
-depends=('nodejs' 'npm' {{#depends}}'{{{.}}}' {{/depends}})
+depends=('nodejs')
 optdepends=({{#optdepends}}'{{{.}}}' {{/optdepends}})
 source=(http://registry.npmjs.org/$_npmname/-/$_npmname-$_npmver.tgz)
-noextract=($_npmname-$_npmver.tgz)
 sha1sums=({{#dist}}{{{shasum}}}{{/dist}})
 
 package() {
   cd $srcdir
-  local _npmdir="$pkgdir/usr/lib/node_modules/"
+  _npmdir="$pkgdir/usr/lib/node_modules/$_npmname"
   mkdir -p $_npmdir
-  cd $_npmdir
-  npm install -g --prefix "$pkgdir/usr" $_npmname@$_npmver
-}
-
-# vim:set ts=2 sw=2 et:'''
+  cp -a $srcdir/package/* $_npmdir
+  if [[ -f "$_npmdir/LICENSE" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  elif [[ -f "$_npmdir/license" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/license" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  elif [[ -f "$_npmdir/LICENSE.md" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/LICENSE.md" "$pkgdir/usr/share/licenses/$pkgname/LICENSE.md"
+  elif [[ -f "$_npmdir/LICENSE.txt" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/LICENSE.txt" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  elif [[ -f "$_npmdir/LICENCE" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/LICENCE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  fi
+}'''
 
 # From NPM sources
 `function cleanup (data) {
