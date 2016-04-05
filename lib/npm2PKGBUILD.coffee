@@ -58,6 +58,14 @@ package() {
   _npmdir="$pkgdir/usr/lib/node_modules/$_npmname"
   mkdir -p $_npmdir
   cp -a $srcdir/package/* $_npmdir
+  if [[ -d "$pkgdir/usr/lib/node_modules/$_npmname/bin" ]]; then
+    mkdir -p "$pkgdir/usr/bin/"
+    cd $pkgdir/usr/bin/
+    for i in "../lib/node_modules/$_npmname/bin/"*
+    do
+      ln -s $i ${i##*/}
+    done
+  fi
   if [[ -f "$_npmdir/LICENSE" ]]; then
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     install -m644 "$_npmdir/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
