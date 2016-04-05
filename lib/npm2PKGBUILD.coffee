@@ -48,9 +48,8 @@ pkgrel=1
 pkgdesc=\"{{{description}}}\"
 arch=(any)
 url=\"{{{homepage}}}\"
-license=({{#licenses}}{{{type}}}{{/licenses}})
+license=('MIT')
 depends=('nodejs')
-optdepends=({{#optdepends}}'{{{.}}}' {{/optdepends}})
 source=(http://registry.npmjs.org/$_npmname/-/$_npmname-$_npmver.tgz)
 sha1sums=({{#dist}}{{{shasum}}}{{/dist}})
 
