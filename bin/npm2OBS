@@ -8,6 +8,7 @@ from subprocess import Popen, PIPE
 # argv[2] is the name of the NPM package (without the nodejs- prefix, OFC)
 # This will place the PKGBUILD at argv[1]/nodejs-argv[2]/PKGBUILD
 call(["prepare.sh", argv[1], argv[2]])
+
 with open(argv[1] + "nodejs-" + argv[2] + "/src/package/package.json") as json_file:
     json_data = json.load(json_file)
     deps = json_data["dependencies"]
