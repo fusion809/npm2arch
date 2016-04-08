@@ -1,4 +1,7 @@
 #!/usr/bin/env coffee
+
+# This library converts the npm package into a PKGBUILD compatible with the
+# Open Build Service (OBS)
 npm      = require 'npm'
 mustache = require 'mustache'
 fs       = require 'fs'
@@ -36,34 +39,59 @@ module.exports = (npmName, options, cb) ->
     pkg.archVersion = pkg.version.replace(/-/, '_')
     populateTemplate pkg
 
-  # Populate the template
+  # Populate the template
   populateTemplate = (pkg) ->
     cb null, mustache.to_html(template, pkg)
 
 template = '''_npmname={{{name}}}
 _npmver={{{version}}}
-pkgname=nodejs-{{{nameLowerCase}}} # All lowercase
+pkgname=nodejs-{{{nameLowerCase}}}
 pkgver={{{archVersion}}}
 pkgrel=1
 pkgdesc=\"{{{description}}}\"
 arch=(any)
 url=\"{{{homepage}}}\"
-license=({{#licenses}}{{{type}}}{{/licenses}})
-depends=('nodejs' 'npm' {{#depends}}'{{{.}}}' {{/depends}})
-optdepends=({{#optdepends}}'{{{.}}}' {{/optdepends}})
+license=('MIT')
+depends=('nodejs')
 source=(http://registry.npmjs.org/$_npmname/-/$_npmname-$_npmver.tgz)
-noextract=($_npmname-$_npmver.tgz)
 sha1sums=({{#dist}}{{{shasum}}}{{/dist}})
 
 package() {
   cd $srcdir
-  local _npmdir="$pkgdir/usr/lib/node_modules/"
+  _npmdir="$pkgdir/usr/lib/node_modules/$_npmname"
   mkdir -p $_npmdir
-  cd $_npmdir
-  npm install -g --prefix "$pkgdir/usr" $_npmname@$_npmver
-}
-
-# vim:set ts=2 sw=2 et:'''
+  cp -a $srcdir/package/* $_npmdir
+  if [[ -d "$pkgdir/usr/lib/node_modules/$_npmname/bin" ]]; then
+    BIN=$pkgdir/usr/bin
+    mkdir -p $BIN
+    cd $BIN
+    for i in "../lib/node_modules/$_npmname/bin/"*
+    do
+      L="${i##*/}"
+      K="${L%.*}"
+      if [[ "$L" == "$K" ]]; then
+        echo "Creating binary $L"
+        ln -s $i $L
+      fi
+    done
+  fi
+  if [[ -f "$_npmdir/LICENSE" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  elif [[ -f "$_npmdir/license" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/license" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  elif [[ -f "$_npmdir/LICENSE.md" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/LICENSE.md" "$pkgdir/usr/share/licenses/$pkgname/LICENSE.md"
+  elif [[ -f "$_npmdir/LICENSE.txt" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/LICENSE.txt" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  elif [[ -f "$_npmdir/LICENCE" ]]; then
+    mkdir -p $pkgdir/usr/share/licenses/$pkgname
+    install -m644 "$_npmdir/LICENCE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  fi
+}'''
 
 # From NPM sources
 `function cleanup (data) {

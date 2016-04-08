@@ -4,7 +4,7 @@ if ! [[ -d "$1/nodejs-$2" ]]; then
 fi
 cd "$1"/"nodejs-$2"
 if ! [[ -f PKGBUILD ]]; then
-  npm2PKGBUILD "$2" > PKGBUILD
+  npm2OBSraw "$2" > PKGBUILD
 fi
 if ! [[ -f src/package/package.json ]]; then
   updpkgsums

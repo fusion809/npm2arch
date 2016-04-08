@@ -1,13 +1,11 @@
-Npm2Arch
-========
+# npm2archOBS
 
 Convert npm packages into a PKGBUILD for Archlinux integration.
 
 NPM package.json --> PKGBUILD for pacman
 
 
-Install
--------
+## Install
 ### From AUR :
 yaourt -S [nodejs-npm2arch](https://aur.archlinux.org/packages/nodejs-npm2arch/)
 
