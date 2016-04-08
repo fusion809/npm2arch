@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "coffee-script": "~1.6.2",
-    "npm": "^1.2.15",
     "mustache": "~0.7.2",
     "rimraf": "~2.1.4",
     "fs.extra": "~1.2.0",
