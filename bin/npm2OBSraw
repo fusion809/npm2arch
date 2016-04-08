@@ -3,7 +3,7 @@ require('coffee-script');
 var npm2arch = require('../lib/npm2OBS');
 
 if(process.argv.length != 3){
-  console.error("Usage: npm2PKGBUILD `npm-name` > PKGBUILD");
+  console.error("Usage: npm2OBSraw `npm-name` > PKGBUILD");
   process.exit(-1);
 }
 
