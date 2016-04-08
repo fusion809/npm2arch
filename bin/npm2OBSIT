@@ -31,7 +31,7 @@ with open(argv[1] + "nodejs-" + argv[2] + "/src/package/package.json") as json_f
     out=output.rstrip()
 
     # This should add these deps to the depends=() array of the original PKGBUILD.
-    call(["moddepends", argv[1], out, "nodejs-" + argv[2]])
+    call(["moddepends", out, argv[1], "nodejs-" + argv[2]])
 
     # This re-runs this script for each of the dependencies listed in out.
     for idx in range(i-1):
