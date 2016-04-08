@@ -19,7 +19,10 @@
     "npm2PKGBUILD": "bin/npm2PKGBUILD",
     "npm2aurball": "bin/npm2aurball",
     "npm2archpkg": "bin/npm2archpkg",
-    "npm2archinstall": "bin/npm2archinstall"
+    "npm2archinstall": "bin/npm2archinstall",
+    "npm2OBS": "bin/npm2OBS",
+    "depends.sh": "bin/depends.sh",
+    "moddepends.sh": "bin/moddepends.sh"
   },
   "preferGlobal": true,
   "engines": {
