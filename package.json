@@ -22,7 +22,8 @@
     "npm2archinstall": "bin/npm2archinstall",
     "npm2OBS": "bin/npm2OBS",
     "depends.sh": "bin/depends.sh",
-    "moddepends.sh": "bin/moddepends.sh"
+    "moddepends.sh": "bin/moddepends.sh",
+    "prepare.sh": "bin/prepare.sh"
   },
   "preferGlobal": true,
   "engines": {
