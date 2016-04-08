@@ -1,9 +1,9 @@
 # npm2archOBS
 
-Convert npm packages into a PKGBUILD for Archlinux integration.
+Convert npm packages into a PKGBUILD for Arch Linux integration. This project is a fork of the [`npm2arch` project of Filirom1](https://github.com/Filirom1/npm2arch), the main distinguishing characteristic of this fork is that there are some additional commands. Namely:
 
-NPM package.json --> PKGBUILD for pacman
-
+* [`npm2OBS`](https://github.com/fusion809/npm2archOBS/blob/master/bin/npm2OBS) &mdash; which generates an Open Build Service (OBS)-friendly PKGBUILD for the package in question. What this means is that the package does not require an Internet connection to build as it does not call `npm` to install the package. Instead all the package's NPM dependencies are listed in the `depends` array.
+* [`npm2OBSIT`](https://github.com/fusion809/npm2archOBS/blob/master/bin/npm2OBSIT) &mdash; this is like `npm2OBS`, except it also adds all the package's NPM dependencies to the OBS too. 
 
 ## Install
 ### From AUR :
@@ -54,4 +54,4 @@ Install an npm package with pacman
 License
 -------
 
-npm2arch is licensed under the [MIT License](https://github.com/Filirom1/npm2arch/blob/master/LICENSE).
+npm2arch is licensed under the [MIT License](https://github.com/fusion809/npm2archOBS/blob/master/LICENSE).

@@ -31,7 +31,7 @@ with open(argv[1] + "nodejs-" + argv[2] + "/src/package/package.json") as json_f
     # Out is a shell-script readable list of the dependencies for which OBS packages were created earlier.
     out=output.rstrip()
 
-    # This should add these deps to the depends=() array of the original PKGBUILD.
+    # This should add these deps to the depends=() array of the original PKGBUILD. It will also commit the changes.
     call(["moddepends", out, argv[1], "nodejs-" + argv[2]])
 
     # This re-runs this script for each of the dependencies listed in out.

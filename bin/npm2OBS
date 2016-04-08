@@ -8,7 +8,7 @@ from subprocess import Popen, PIPE
 # argv[1] is the path to the directory in which the PKGBUILD is to be placed.
 # argv[2] is the name of the NPM package (without the nodejs- prefix, OFC)
 # This will place the PKGBUILD at argv[1]/nodejs-argv[2]/PKGBUILD
-call(["prepare.sh", argv[1], argv[2]])
+call(["prepareobs", argv[1], argv[2]])
 
 with open(argv[1] + "nodejs-" + argv[2] + "/src/package/package.json") as json_file:
     json_data = json.load(json_file)
@@ -21,7 +21,7 @@ with open(argv[1] + "nodejs-" + argv[2] + "/src/package/package.json") as json_f
     for key, value in deps.items(): # key is the dependency being iterated over; value is its version
         DEP.append(key)
 
-    p=Popen(["depends.sh"] + DEP, stdout=PIPE)
+    p=Popen(["dependslist"] + DEP, stdout=PIPE)
     output, err = p.communicate(b"input data that is passed to subprocess' stdin")
     rc = p.returncode
 
@@ -29,4 +29,4 @@ with open(argv[1] + "nodejs-" + argv[2] + "/src/package/package.json") as json_f
     out=output.rstrip()
 
     # This should add these deps to the depends=() array of the original PKGBUILD.
-    call(["moddepends.sh", out, argv[1], "nodejs-" + argv[2]])
+    call(["moddepends", out, argv[1], "nodejs-" + argv[2]])
