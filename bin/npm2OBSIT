@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+import json
+from sys import argv
+from subprocess import call
+from subprocess import Popen, PIPE
+
+# argv[1] is the path to the directory in which the PKGBUILD is to be placed.
+# argv[2] is the name of the NPM package (without the nodejs- prefix, OFC)
+# This will place the PKGBUILD at argv[1]/nodejs-argv[2]/PKGBUILD
+call(["prepareobs", argv[1], argv[2]])
+
+with open(argv[1] + "nodejs-" + argv[2] + "/src/package/package.json") as json_file:
+    json_data = json.load(json_file)
+    deps = json_data["dependencies"]
+    LEN=len(deps)
+    i=0
+    DEP=list()
+    print(DEP)
+
+    # The following initially creates the necessary OBS project directories for the package's direct deps and gets them ready.
+    for key, value in deps.items():
+        DEP.append(key)
+        i = i+1
+        call(["cpobsn", argv[1], key])
+
+    p=Popen(["dependslist"] + DEP, stdout=PIPE)
+    output, err = p.communicate(b"input data that is passed to subprocess' stdin")
+    rc = p.returncode
+
+    # Out is a shell-script readable list of the dependencies for which OBS packages were created earlier.
+    out=output.rstrip()
+
+    # This should add these deps to the depends=() array of the original PKGBUILD.
+    call(["moddepends", argv[1], out, "nodejs-" + argv[2]])
+
+    # This re-runs this script for each of the dependencies listed in out.
+    for idx in range(i-1):
+        call(["npm2OBSIT", argv[1], DEP[idx]])

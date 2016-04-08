@@ -22,9 +22,10 @@
     "npm2archinstall": "bin/npm2archinstall",
     "npm2OBS": "bin/npm2OBS",
     "npm2OBSraw": "bin/npm2OBSraw",
-    "depends.sh": "bin/depends.sh",
-    "moddepends.sh": "bin/moddepends.sh",
-    "prepare.sh": "bin/prepare.sh"
+    "cpobsn": "bin/cpobsn",
+    "dependslist": "bin/dependslist",
+    "moddepends": "bin/moddepends",
+    "prepareobs": "bin/prepareobs"
   },
   "preferGlobal": true,
   "engines": {
@@ -32,7 +33,7 @@
   },
   "dependencies": {
     "coffee-script": "~1.6.2",
-    "npm": "~1.2.15",
+    "npm": "^1.2.15",
     "mustache": "~0.7.2",
     "rimraf": "~2.1.4",
     "fs.extra": "~1.2.0",

@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script produces a list of dependencies with the nodejs prefix
 k=0
 for i in "$@"
 do

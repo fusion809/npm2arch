@@ -1,0 +1,18 @@
+#!/bin/bash
+cd $1
+if ! [[ -d "nodejs-$2" ]]; then
+  mkdir nodejs-"$2"
+  npm2PKGBUILD "$2" > "nodejs-$2"/PKGBUILD
+  cp -a package-query/_service "nodejs-$2"
+  osc add "nodejs-$2"
+  cd "nodejs-$2"
+  updpkgsums
+  if [[ -d "src" ]]; then
+    bsdtar -xf *.tgz -C src
+  else
+    mkdir src
+    bsdtar -xf *.tgz -C src
+  fi
+  cd -
+  echo "nodejs-$2" >> $HOME/packages.txt
+fi

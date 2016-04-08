@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Create a new directory for new package, if need be
+if ! [[ -d "$1/nodejs-$2" ]]; then
+  mkdir -p "$1"/"nodejs-$2"
+fi
+
+# Change into this directory
+cd "$1"/"nodejs-$2"
+
+# Create basic PKGBUILD template using npm2OBSraw
+if ! [[ -f PKGBUILD ]]; then
+  npm2OBSraw "$2" > PKGBUILD
+fi
+
+# Update checksums, this is done to download
+if ! [[ -f src/package/package.json ]]; then
+  updpkgsums
+  mkdir src
+  bsdtar -xf *.tgz -C src
+fi
+
+cd -
