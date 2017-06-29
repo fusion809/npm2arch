@@ -1,5 +1,5 @@
 {
-  "author": "Brenton Horne <brentonhorne77@gmail.com> / Filirom1 <filirom1@gmail.com>",
+  "author": "fusion809 / Filirom1 <filirom1@gmail.com>",
   "name": "npm2archOBS",
   "description": "Convert NPM package to a PKGBUILD for Arch Linux, with Open Build Service-compatibility",
   "version": "0.1.0",
